@@ -11,7 +11,7 @@ export function rewriteToken(textToken, pattern, Token) {
   const result = [];
   const text = textToken.content;
 
-  while ((match = pattern.exec(text)) != null) {
+  while ((match = pattern.exec(text))) {
     if (match.index > idx) {
       const sub = new Token('text', '', 0);
       sub.content = text.slice(idx, match.index);
@@ -27,7 +27,7 @@ export function rewriteToken(textToken, pattern, Token) {
   }
 
   if (!idx) {
-    return null;
+    return undefined;
   }
   if (text.length > idx) {
     const sub = new Token('text', '', 0);
