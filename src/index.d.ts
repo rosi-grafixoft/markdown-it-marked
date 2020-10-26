@@ -10,4 +10,4 @@ export type MarkedEnv = {markedPattern?: RegExp};
 export function envFromSubstrings(substrings: string[]): MarkedEnv;
 export function envFromWords(substrings: string[]): MarkedEnv;
 
-export default function markedPlugin(md: unknown): void;
+export function plugin(md: unknown): void;

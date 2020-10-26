@@ -7,7 +7,7 @@
 
 import MarkdownIt from 'markdown-it';
 
-import plugin from 'markdown-it-marked';
+import {plugin} from 'markdown-it-marked';
 
 describe('default options', () => {
   const mi = MarkdownIt()

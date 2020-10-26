@@ -22,13 +22,12 @@ import markedPlugin, {envFromWords} from 'markdown-it-marked';
 const md = MarkdownIt().use(markedPlugin);
 
 const html = md.render('some text to _render_', envFromWords(['text']));
-// html === '<p>some <mark>text</mark> to <i>render</i></p>'
+// html === '<p>some <mark>text</mark> to <i>render</i></p>\n'
 ```
 
 
 ## TODO
 
-* Use rollup to provide an ES5 transpiled copy in dist.
 * Add instructions for transpiling with application settings.
 * Fancy unicode handling for `\b` replacement.
 * Attribute setting from match via replacement override.

@@ -7,4 +7,4 @@
 
 export {envFromSubstrings, envFromWords} from './pattern';
 
-export {markedPlugin as default} from './plugin';
+export {markedPlugin as plugin} from './plugin';

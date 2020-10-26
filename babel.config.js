@@ -9,6 +9,8 @@ module.exports = (api) => {
   const presets = [];
   if (api.env('test')) {
     presets.push(['@babel/preset-env', {targets: {node: 'current'}}]);
+  } else {
+    presets.push(['@babel/preset-env', {/* No targets so ES5 only */}]);
   }
   return {presets};
 };

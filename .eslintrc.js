@@ -46,19 +46,19 @@ const rules = {
 
 module.exports = {
   extends: ['eslint:recommended'],
+  ignorePatterns: '/dist',
   overrides: [{
     env: {
       'browser': true,
       'es6': true,
     },
-    extends: ['plugin:jest/recommended'],
-    files: ['test/*.js'],
+    files: ['src/*.js'],
   }, {
     env: {
       'jest/globals': true,
     },
     extends: ['plugin:jest/recommended'],
-    files: ['tests/*.js'],
+    files: ['test/*.js'],
   }, {
     files: ['*.config.js', '.*.js'],
     globals: {

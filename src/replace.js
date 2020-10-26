@@ -1,5 +1,5 @@
 /*
- * Recreate text tokens if contenxt match a pattern.
+ * Recreate text tokens if content matches a pattern.
  *
  * Copyright 2020 Visual Meaning Ltd
  * This is free software licensed as Apache-2.0 - see COPYING for terms.
