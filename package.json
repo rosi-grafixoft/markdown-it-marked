@@ -32,6 +32,11 @@
     "url": "https://github.com/VisualMeaning/markdown-it-marked/issues"
   },
   "homepage": "https://github.com/VisualMeaning/markdown-it-marked#readme",
+  "jest": {
+    "moduleNameMapper": {
+      "markdown-it-marked": "<rootDir>/src/index.js"
+    }
+  },
   "sideEffects": false,
   "devDependencies": {
     "@babel/core": "^7.12.3",

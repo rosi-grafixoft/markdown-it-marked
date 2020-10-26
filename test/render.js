@@ -23,6 +23,7 @@ describe('default options', () => {
 
   test.each([
     [/x/g, '', ''],
+    [/x/g, 'y', 'y'],
     [/x/g, 'x', '<mark>x</mark>'],
     [/x/g, 'xy', '<mark>x</mark>y'],
     [/y/g, 'xy', 'x<mark>y</mark>'],
@@ -35,5 +36,37 @@ describe('default options', () => {
     ],
   ])('inline match %O in %O', (pat, input, expected) => {
     expect(mi.renderInline(input, {markedPattern: pat})).toEqual(expected);
+  });
+
+  test.each([
+    [/x/g, '', ''],
+    [/x/g, 'y', '<p>y</p>\n'],
+    [/x/g, 'x', '<p><mark>x</mark></p>\n'],
+    [
+      /x/g,
+      '[![x](./x)](./x)',
+      '<p><a href="./x"><img src="./x" alt="x"></a></p>\n',
+    ],
+    [
+      /a/gi,
+      '* A\n  * a\n  * b\n* B\n  * a\n',
+      `\
+<ul>
+<li><mark>A</mark>
+<ul>
+<li><mark>a</mark></li>
+<li>b</li>
+</ul>
+</li>
+<li>B
+<ul>
+<li><mark>a</mark></li>
+</ul>
+</li>
+</ul>
+`,
+    ],
+  ])('block match %O in %O', (pat, input, expected) => {
+    expect(mi.render(input, {markedPattern: pat})).toEqual(expected);
   });
 });
