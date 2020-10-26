@@ -9,18 +9,18 @@ import {promises as fs} from 'fs';
 import babel from '@rollup/plugin-babel';
 import {terser} from "rollup-plugin-terser";
 
-import packageJson from './package.json';
+import {main, module} from './package.json';
 
 async function loadBanner() {
-  const contents = await fs.readFile(packageJson.module, {encoding: 'utf-8'});
+  const contents = await fs.readFile(module, {encoding: 'utf-8'});
   return contents.slice(0, contents.search(/(?<=\*\/)\n/) + 1);
 }
 
 export default {
-  input: packageJson.module,
+  input: module,
   output: {
     banner: loadBanner,
-    file: packageJson.main,
+    file: main,
     format: 'umd',
     name: 'markdownitMarked',
     plugins: [terser()],

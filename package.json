@@ -1,10 +1,14 @@
 {
   "name": "markdown-it-marked",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Plugin for markdown-it for marking substrings within text",
   "license": "Apache-2.0",
   "main": "dist/markdown-it-marked.js",
   "module": "src/index.js",
+  "exports": {
+    "require": "./dist/markdown-it-marked.js",
+    "default": "./src/index.js"
+  },
   "scripts": {
     "lint": "eslint .",
     "prepare": "rollup --config",
@@ -28,6 +32,7 @@
     "url": "https://github.com/VisualMeaning/markdown-it-marked/issues"
   },
   "homepage": "https://github.com/VisualMeaning/markdown-it-marked#readme",
+  "sideEffects": false,
   "devDependencies": {
     "@babel/core": "^7.12.3",
     "@babel/preset-env": "^7.12.1",

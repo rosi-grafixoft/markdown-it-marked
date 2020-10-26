@@ -5,7 +5,7 @@
  * This is free software licensed as Apache-2.0 - see COPYING for terms.
  */
 
-import {rewriteToken} from './replace';
+import {rewriteToken} from './replace.js';
 
 export function markedPlugin(md) {
   const {arrayReplaceAt} = md.utils;
