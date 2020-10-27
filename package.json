@@ -5,19 +5,20 @@
   "license": "Apache-2.0",
   "main": "dist/markdown-it-marked.js",
   "module": "src/index.js",
+  "types": "src/index.d.ts",
   "exports": {
     "require": "./dist/markdown-it-marked.js",
     "default": "./src/index.js"
   },
-  "scripts": {
-    "lint": "eslint .",
-    "prepare": "rollup --config",
-    "pretest": "eslint .",
-    "test": "jest --testRegex test/*.js"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/VisualMeaning/markdown-it-marked.git"
+  "author": "Martin Packman <martin.packman@visual-meaning.com>",
+  "repository": "github:VisualMeaning/markdown-it-marked",
+  "bugs": "https://github.com/VisualMeaning/markdown-it-marked/issues",
+  "homepage": "https://github.com/VisualMeaning/markdown-it-marked#readme",
+  "jest": {
+    "moduleNameMapper": {
+      "markdown-it-marked": "<rootDir>/src/index.js"
+    },
+    "testRegex": "test/.*\\.js$"
   },
   "keywords": [
     "markdown-it-plugin",
@@ -27,15 +28,14 @@
     "highlight",
     "mark"
   ],
-  "author": "Martin Packman <martin.packman@visual-meaning.com>",
-  "bugs": {
-    "url": "https://github.com/VisualMeaning/markdown-it-marked/issues"
-  },
-  "homepage": "https://github.com/VisualMeaning/markdown-it-marked#readme",
-  "jest": {
-    "moduleNameMapper": {
-      "markdown-it-marked": "<rootDir>/src/index.js"
-    }
+  "scripts": {
+    "lint": "eslint .",
+    "postpublish": "git push --atomic origin master $npm_package_version",
+    "postversion": "npm publish",
+    "prepare": "rollup --config",
+    "pretest": "eslint .",
+    "preversion": "npm test",
+    "test": "jest"
   },
   "sideEffects": false,
   "devDependencies": {
