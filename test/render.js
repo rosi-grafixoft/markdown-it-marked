@@ -7,7 +7,7 @@
 
 import MarkdownIt from 'markdown-it';
 
-import {plugin} from 'markdown-it-marked';
+import {envFromUnicodeTerms, plugin} from 'markdown-it-marked';
 
 describe('default options', () => {
   const mi = MarkdownIt()
@@ -68,5 +68,19 @@ describe('default options', () => {
     ],
   ])('block match %O in %O', (pat, input, expected) => {
     expect(mi.render(input, {markedPattern: pat})).toEqual(expected);
+  });
+});
+
+describe('integration', () => {
+  const mi = MarkdownIt()
+    .use(plugin);
+
+  const ampEnv = envFromUnicodeTerms(['a', '&', 'b']);
+  test.each([
+    ['', ''],
+    ['a & b', '<mark>a</mark> <mark>&amp;</mark> <mark>b</mark>'],
+    ['aa && bb', 'aa <mark>&amp;</mark><mark>&amp;</mark> bb'],
+  ])('real world %O in %O', (input, expected) => {
+    expect(mi.renderInline(input, ampEnv)).toEqual(expected);
   });
 });
