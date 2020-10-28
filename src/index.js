@@ -5,6 +5,6 @@
  * This is free software licensed as Apache-2.0 - see COPYING for terms.
  */
 
-export {envFromSubstrings, envFromWords} from './pattern.js';
+export {envFromTerms} from './pattern.js';
 
 export {markedPlugin as plugin} from './plugin.js';

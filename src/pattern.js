@@ -9,11 +9,7 @@ function esc(s) {
   return s.replace(/[\\.[\]^$()|*+?{}]/g, '\\$&');
 }
 
-function buildEnv(strings, lead, trail, flags) {
-  if (!strings.length) {
-    return {};
-  }
-
+function buildEnv(strings, pre, suf, flags) {
   const keys = Object.keys(strings);
   keys.sort(function _sortLongestReverse(a, b) {
     return strings[a].length - strings[b].length || b - a;
@@ -23,20 +19,34 @@ function buildEnv(strings, lead, trail, flags) {
     throw new Error('markdown-it-marked: zero-length word');
   }
 
-  const parts = [lead];
+  const parts = [pre];
   let i = keys.length;
   while (--i) {
     parts.push(esc(strings[keys[i]]), '|');
   }
-  parts.push(esc(strings[keys[0]]), trail);
+  parts.push(esc(strings[keys[0]]), suf);
 
   return {markedPattern: new RegExp(parts.join(''), flags)};
 }
 
-export function envFromSubstrings(substrings) {
-  return buildEnv(substrings, '', '', 'gi');
-}
+const boundaries = ['', '\\b', '(?:', '\\b(?:', ')', ')\\b'];
 
-export function envFromWords(words) {
-  return buildEnv(words, '\\b(?:', ')\\b', 'gi');
+export function envFromTerms(terms, options) {
+  if (!terms.length) {
+    return {};
+  }
+  options ||= {};
+
+  // If terms may be prefixes, do not include boundary suffix.
+  // If terms may be suffixes, do not include boundary prefix.
+  const boundaryPre = !options.suffix;
+  const boundarySuf = !options.prefix;
+  const contain = boundaryPre | boundarySuf && terms.length > 1;
+  const pre = boundaries[(contain << 1) | boundaryPre];
+  const suf = boundaries[(contain << 2) | boundarySuf];
+
+  // If exact match is required, remove 'i' flag.
+  const flags = 'ig'.slice(!!options.exact);
+
+  return buildEnv(terms, pre, suf, flags);
 }

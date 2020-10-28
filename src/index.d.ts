@@ -6,8 +6,8 @@
  */
 
 export type MarkedEnv = {markedPattern?: RegExp};
+export type TermOptions = {exact?: boolean, prefix?: boolean, suffix?: boolean};
 
-export function envFromSubstrings(substrings: string[]): MarkedEnv;
-export function envFromWords(substrings: string[]): MarkedEnv;
+export function envFromTerms(terms: string[], options?: TermOptions): MarkedEnv;
 
 export function plugin(md: unknown): void;

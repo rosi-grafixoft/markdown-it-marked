@@ -5,42 +5,57 @@
  * This is free software licensed as Apache-2.0 - see COPYING for terms.
  */
 
-import {envFromSubstrings, envFromWords} from 'markdown-it-marked';
+import {envFromTerms} from 'markdown-it-marked';
 
-describe('envFromSubstring', () => {
+describe('envFromTerms', () => {
+  const completeOptions = {exact: true, prefix: true, suffix: true};
   test.each([
     [[], {}],
-    [['a'], {markedPattern: /a/gi}],
-    [['?'], {markedPattern: /\?/gi}],
-    [['.*', '.+', '()', '|$'], {markedPattern: /\.\*|\.\+|\(\)|\|\$/gi}],
+    [['a'], {markedPattern: /a/g}],
+    [['?'], {markedPattern: /\?/g}],
+    [['.*', '.+', '()', '|$'], {markedPattern: /\.\*|\.\+|\(\)|\|\$/g}],
   ])('escaping %O', (strings, expected) => {
-    expect(envFromSubstrings(strings)).toEqual(expected);
+    expect(envFromTerms(strings, completeOptions)).toEqual(expected);
   });
 
+  const substringOptions = {prefix: true, suffix: true};
   test.each([
     [['one', 'two'], {markedPattern: /one|two/gi}],
     [['sub', 'substring'], {markedPattern: /substring|sub/gi}],
   ])('sorting %O', (strings, expected) => {
-    expect(envFromSubstrings(strings)).toEqual(expected);
+    expect(envFromTerms(strings, substringOptions)).toEqual(expected);
   });
 
   test.each([
     [['']],
     [['a', '', 'z']],
   ])('checking %O', strings => {
-    expect(() => envFromSubstrings(strings)).toThrow({
+    expect(() => envFromTerms(strings)).toThrow({
       'message': 'markdown-it-marked: zero-length word',
     });
   });
-});
 
-describe('envFromWords', () => {
-  // Could duplicate all the core tests, but seems a bit pointless.
+  const fullWordOptions = {prefix: false, suffix: false};
   test.each([
-    [[], {}],
-    [['a'], {markedPattern: /\b(?:a)\b/gi}],
+    [['a'], {markedPattern: /\ba\b/gi}],
     [['it\'s', 'done.'], {markedPattern: /\b(?:done\.|it's)\b/gi}],
   ])('using %O', (words, expected) => {
-    expect(envFromWords(words)).toEqual(expected);
+    expect(envFromTerms(words, fullWordOptions)).toEqual(expected);
+  });
+
+  const prefixOptions = {prefix: true, suffix: false};
+  test.each([
+    [['pre'], {markedPattern: /\bpre/gi}],
+    [['inter', 'sub', 'trans'], {markedPattern: /\b(?:inter|trans|sub)/gi}],
+  ])('prefixes %O', (words, expected) => {
+    expect(envFromTerms(words, prefixOptions)).toEqual(expected);
+  });
+
+  const suffixOptions = {prefix: false, suffix: true};
+  test.each([
+    [['er'], {markedPattern: /er\b/gi}],
+    [['ism', 'ship', 'tion'], {markedPattern: /(?:ship|tion|ism)\b/gi}],
+  ])('prefixes %O', (words, expected) => {
+    expect(envFromTerms(words, suffixOptions)).toEqual(expected);
   });
 });

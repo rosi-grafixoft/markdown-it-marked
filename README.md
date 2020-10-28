@@ -21,11 +21,11 @@ For having `<mark/>` with markdown syntax see [markdown-it-mark] plugin instead.
 
 ```js
 import MarkdownIt from 'markdown-it';
-import {envFromWords, plugin as markedPlugin} from 'markdown-it-marked';
+import {envFromTerms, plugin as markedPlugin} from 'markdown-it-marked';
 
 const md = MarkdownIt().use(markedPlugin);
 
-const html = md.render('some text to _render_', envFromWords(['text']));
+const html = md.render('some text to _render_', envFromTerms(['text']));
 // html === '<p>some <mark>text</mark> to <i>render</i></p>\n'
 ```
 
