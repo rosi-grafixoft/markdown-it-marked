@@ -72,15 +72,39 @@ describe('default options', () => {
 });
 
 describe('integration', () => {
-  const mi = MarkdownIt()
-    .use(plugin);
+  describe('terms', () => {
+    const mi = MarkdownIt()
+      .use(plugin);
 
-  const ampEnv = envFromUnicodeTerms(['a', '&', 'b']);
-  test.each([
-    ['', ''],
-    ['a & b', '<mark>a</mark> <mark>&amp;</mark> <mark>b</mark>'],
-    ['aa && bb', 'aa <mark>&amp;</mark><mark>&amp;</mark> bb'],
-  ])('real world %O in %O', (input, expected) => {
-    expect(mi.renderInline(input, ampEnv)).toEqual(expected);
+    const empTerms = ['a', '&', 'b'];
+    test.each([
+      [empTerms, '', ''],
+      [empTerms, 'a & b', '<mark>a</mark> <mark>&amp;</mark> <mark>b</mark>'],
+      [empTerms, 'aa && bb', 'aa <mark>&amp;</mark><mark>&amp;</mark> bb'],
+      [['роси'], 'роси и пана', '<mark>роси</mark> и пана'],
+      [['роси'], 'роси и роси и пана', '<mark>роси</mark> и <mark>роси</mark> и пана'],
+      [['роси'], 'руси и роси и пана', 'руси и <mark>роси</mark> и пана'],
+      [['/роси'], '/роси и пана', '<mark>/роси</mark> и пана'],
+      [['щ'], 'Щ в щастие', '<mark>Щ</mark> в щастие'],
+      [['Я'], 'Я бълка', '<mark>Я</mark> бълка'],
+      [['щ'], 'щ астие', '<mark>щ</mark> астие'],
+      [['Ю'], 'Ю тия', '<mark>Ю</mark> тия'],
+      [['Ъ'], 'Ъ гъл', '<mark>Ъ</mark> гъл'],
+    ])('real world %O in %O', (terms, input, expected) => {
+      const env = envFromUnicodeTerms(terms);
+      expect(mi.renderInline(input, env)).toEqual(expected);
+    });
+  });
+
+  describe('terms prefixes', () => {
+    const mi = MarkdownIt()
+      .use(plugin);
+
+    test.each([
+      [['роси'], {prefix: true}, 'Панайот и Росица', 'Панайот и <mark>Роси</mark>ца'],
+    ])('real world %O in %O', (terms, options, input, expected) => {
+      const env = envFromUnicodeTerms(terms, options);
+      expect(mi.renderInline(input, env)).toEqual(expected);
+    });
   });
 });
