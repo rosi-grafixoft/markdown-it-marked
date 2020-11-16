@@ -90,6 +90,7 @@ describe('integration', () => {
       [['щ'], 'щ астие', '<mark>щ</mark> астие'],
       [['Ю'], 'Ю тия', '<mark>Ю</mark> тия'],
       [['Ъ'], 'Ъ гъл', '<mark>Ъ</mark> гъл'],
+      [['Й'], 'Й ордан', '<mark>Й</mark> ордан'],
     ])('real world %O in %O', (terms, input, expected) => {
       const env = envFromUnicodeTerms(terms);
       expect(mi.renderInline(input, env)).toEqual(expected);
@@ -102,6 +103,12 @@ describe('integration', () => {
 
     test.each([
       [['роси'], {prefix: true}, 'Панайот и Росица', 'Панайот и <mark>Роси</mark>ца'],
+      [['йо-хо-хо'], {prefix: true}, 'Цитат: йо-хо-хо', 'Цитат: <mark>йо-хо-хо</mark>'],
+      [['щ'], {prefix: true}, 'Щ в щастие и къща', '<mark>Щ</mark> в <mark>щ</mark>астие и къща'],
+      [['голям'], {prefix: true}, 'по-голям', 'по-<mark>голям</mark>'],
+      [['голям'], {prefix: true}, 'малък/голям', 'малък/<mark>голям</mark>'],
+      [['голям'], {prefix: true}, 'малък, голям, среден', 'малък, <mark>голям</mark>, среден'],
+      [['©'], {prefix: true}, '© symbol', '<mark>©</mark> symbol'],
     ])('real world %O in %O', (terms, options, input, expected) => {
       const env = envFromUnicodeTerms(terms, options);
       expect(mi.renderInline(input, env)).toEqual(expected);
